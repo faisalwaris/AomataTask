@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/connectionTypeGroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/title">
+
+                <RadioButton
+                    android:id="@+id/internet"
+                    style="@style/TVMBStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:text="@string/internet"
+                    android:textColor="@color/purple_500"
+                    android:theme="@style/myCheckBox" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/purple_500"
+                    android:paddingStart="12dp" />
+
+                <RadioButton
+                    android:id="@+id/gallery"
+                    style="@style/TVMBStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:paddingStart="12dp"
+                    android:text="@string/gallery"
+                    android:textColor="@color/purple_500"
+                    android:theme="@style/myCheckBox" />
+
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/TVMBStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="24dp"
+                android:text="Please select one option"
+
+                android:textColor="@color/purple_500"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/actionButton"
+                style="@style/TVMBStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/input_background_solid_red"
+                android:gravity="center"
+                android:paddingVertical="15dp"
+                android:text="Done"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/connectionTypeGroup"
+                app:layout_constraintStart_toStartOf="@+id/connectionTypeGroup"
+                app:layout_constraintTop_toBottomOf="@+id/connectionTypeGroup" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

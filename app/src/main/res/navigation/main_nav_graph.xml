@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registration_nav_graph"
+    app:startDestination="@id/dashBoardFragment">
+
+
+    <fragment
+        android:id="@+id/dashBoardFragment"
+        android:name="com.example.aomatatask.view.dashboard.DashboardFragment"
+        android:label="DashBoardFragment"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashBoardFragment_to_thumbnailDetailFragment"
+            app:destination="@id/thumbnailDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/thumbnailDetailFragment"
+        android:name="com.example.aomatatask.view.detailScreen.ThumbnailDetailFragment"
+        android:label="ThumbnailDetailFragment"
+        tools:layout="@layout/fragment_detail_thumbnail">
+        <argument
+            android:name="thumbnailUrl"
+            app:argType="string" />
+    </fragment>
+
+
+</navigation>
