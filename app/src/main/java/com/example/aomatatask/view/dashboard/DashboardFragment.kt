@@ -28,7 +28,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     private val viewModelDashBoard: ViewModelDashBoard by viewModels()
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var galleryAdapter: DashboardAdapter
-    private var galleryList: MutableList<PixabayPhotoResponse> = ArrayList()
     private var imgSelectedType: String? = null
     private lateinit var noDataFoundBinding: NoDataFoundBinding
 
@@ -44,6 +43,10 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         noDataFoundBinding = binding.noDataFound
         if (imgSelectedType.isNullOrBlank()) getString(R.string.internet)
         setGalleryAdapter()
+
+        if(viewModelDashBoard.isListEmpty() == null || viewModelDashBoard.isListEmpty()){
+            viewModelDashBoard.fetchImages()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -64,14 +67,12 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         viewModelDashBoard.pixabayImagesList.observe(viewLifecycleOwner) {
             it.getData()?.let { imagesListResponse ->
                 if (imagesListResponse.isNotEmpty()) {
-                    galleryList.clear()
-                    galleryList.addAll(imagesListResponse)
                     galleryAdapter.notifyDataSetChanged()
 
                     noDataFoundBinding.showHideNoData(
                         getString(R.string.no_data_found),
                         R.drawable.ic_no_data_found,
-                        galleryList.size
+                        viewModelDashBoard.galleryList.size
                     )
                 }
             }
@@ -93,7 +94,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
     private fun setGalleryAdapter() {
         binding.rcvImages.layoutManager = GridLayoutManager(requireContext(), 2)
-        galleryAdapter = DashboardAdapter(galleryList) { selectedIndex ->
+        galleryAdapter = DashboardAdapter(viewModelDashBoard.galleryList) { selectedIndex ->
             showAlertDialog(selectedIndex)
         }
         binding.rcvImages.adapter = galleryAdapter
@@ -168,7 +169,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     @SuppressLint("Range")
     private fun getContentFromGallery() {
         imgSelectedType = getString(R.string.gallery)
-        galleryList.clear()
+        viewModelDashBoard.galleryList.clear()
         lifecycleScope.launch(Dispatchers.IO) {
             val cursorForImages = requireContext().contentResolver.query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -178,7 +179,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 "$orderBy DESC"
             )
             while (cursorForImages!!.moveToNext()) {
-                galleryList.add(
+                viewModelDashBoard.galleryList.add(
                     PixabayPhotoResponse(
                         cursorForImages.getString(
                             cursorForImages.getColumnIndex(
@@ -197,11 +198,11 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     }
 
     private fun showAlertDialog(position: Int) {
-        if (galleryList[position].previewURL != null) {
+        if (viewModelDashBoard.galleryList[position].previewURL != null) {
             val alertDialog = BasicAlertDialog {
                 findNavController(requireView()).navigate(
                     DashboardFragmentDirections.actionDashBoardFragmentToThumbnailDetailFragment(
-                        galleryList[position].previewURL!!
+                        viewModelDashBoard.galleryList[position].previewURL!!
                     )
                 )
             }

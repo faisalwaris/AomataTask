@@ -17,9 +17,7 @@ class ViewModelDashBoard @Inject constructor(private val networkRepository: Netw
     var pixabayImagesList: MutableLiveData<OneShotEvent<List<PixabayPhotoResponse>>> =
         MutableLiveData()
 
-    init {
-        fetchImages()
-    }
+    var galleryList: MutableList<PixabayPhotoResponse> = ArrayList()
 
     fun fetchImages() {
         viewModelScope.launch {
@@ -27,9 +25,18 @@ class ViewModelDashBoard @Inject constructor(private val networkRepository: Netw
             val networkResponse = networkRepository.getPixabayImages()
             hideProgressBar()
             if (isResponseSuccess(networkResponse)) {
+                if(!(networkResponse as PixabayPhotosParentResponse).hits.isNullOrEmpty()){
+
+                    galleryList.clear()
+                    galleryList.addAll((networkResponse).hits!!)
+                }
                 pixabayImagesList.value =
-                    OneShotEvent((networkResponse as PixabayPhotosParentResponse).hits)
+                    OneShotEvent((networkResponse).hits)
             }
         }
+    }
+
+    fun isListEmpty(): Boolean{
+        return galleryList.isEmpty()
     }
 }

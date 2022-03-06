@@ -24,9 +24,13 @@ class ThumbnailDetailFragment :
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (requireActivity() as SingleActivity).hideDefaultActionBar()
+    }
+
     override fun initView() {
         binding = FragmentDetailThumbnailBinding.bind(requireView())
-        (requireActivity() as SingleActivity).hideDefaultActionBar()
     }
 
     override fun initClickListener() {
